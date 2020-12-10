@@ -5,15 +5,6 @@ class Consommateur:
         self.price = price
         self.name= name
 
-    def get_consumption(self):
-        return self.consumption
-
-    def get_price(self):
-        return self.price
-
-    def get_name(self):
-        return self.name
-
     def update_consumption(self,new_consumption):
         self.consumption = new_consumption
         
@@ -23,8 +14,6 @@ class Ville(Consommateur):
         super().__init__(consumption,price,name)
         self.zip = zip_code
 
-    def get_zip(self):
-        return self.zip
 
 class Entreprise(Consommateur):
     def __init__(self,consumption,price,name,activity):

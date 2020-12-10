@@ -5,9 +5,10 @@ from Consommateur import *
 import time
 import random
 
-c1 = Consommateur('20W',5)
-c2 = Consommateur('10W',2)
-c3 = Consommateur('110W',33)
+c1 = Consommateur('20W',5,'kola')
+c2 = Consommateur('10W',2,'kola')
+c3 = Consommateur('110W',33,'kola')
+
 r1 = Reseau([c1,c2,c3],"centrale")
 
 while(1):
