@@ -13,7 +13,7 @@ class Reseau:
 
     def update_reseau(self):
         for elem in self.consommateurs:
-            print(elem.get_consumption())
+            print(elem.consumption)
         self.show_messages()
     
     def add_central(self,new_central):
@@ -22,4 +22,4 @@ class Reseau:
 
     def add_consommateur(self,new_consommateur):
         self.consommateurs.append(new_consommateur)
-        
+    

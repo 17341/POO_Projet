@@ -1,53 +1,57 @@
 class Central:
     
-    def __init__(self,energy,cost,co2,demands):
+    def __init__(self,energy,cost,co2,name,type):
         self.energy = energy
         self.cost = cost
         self.co2 = co2
-        self.demands = demands
-        
-    def update_demands(self,new_demands):
-        self.demands = new_demands
-        return self.demands
+        self.name = name
+        self.type = type
 
+    def print_infos(self):
+        print(f'Name: {self.name}   Production: {self.energy}W   Cost: {self.cost}€   CO2: {self.co2}')
 
+    def update_infos(self,new_energy,new_cost,new_co2):
+        self.energy = new_energy
+        self.cost = new_cost
+        self.co2 = new_co2
 
+       
 class Central_Solaire(Central):
 
-    def __init__(self,energy,cost,meteo,demands):
-        super().__init__(energy,cost,0,demands) #CO2 == 0
+    def __init__(self,energy,cost,meteo,name,type = 'Solaire'):
+        super().__init__(energy,cost,0,name,type) #CO2 == 0
         self.meteo = meteo
 
 class Parc_Eolienne(Central_Solaire):
 
-    def __init__(self,energy,cost,meteo,demands):
-        super().__init__(energy,cost,meteo,demands) 
+    def __init__(self,energy,cost,meteo,name,type = 'Eolienne'):
+        super().__init__(energy,cost,meteo,name,type) 
         
 class Central_Nucleaire(Central):
 
-    def __init__(self,energy,cost,co2,demands):
-        super().__init__(energy,cost,co2,demands)
+    def __init__(self,energy,cost,co2,name,type = 'Nucleaire'):
+        super().__init__(energy,cost,co2,name,type)
 
 class Central_Gaz(Central):
     
-    def __init__(self,energy,cost,co2,demands):
-        super().__init__(energy,cost,co2,demands)
+    def __init__(self,energy,cost,co2,name,type = 'Gaz'):
+        super().__init__(energy,cost,co2,name,type )
 
 class Stock(Central):
     
-    def __init__(self,energy,demands,stock):
-        super().__init__(energy,0,0,demands) #CO2 == 0
+    def __init__(self,energy,stock,name):
+        super().__init__(energy,0,0,name,0) #CO2 == 0
         self.stock = stock 
 
     def update(self,new_energy,new_demand):
-        self.demands = new_demand
-        self.energy = new_energy
-        if  self.energy > self.demands :
+        
+        if  new_energy > new_demand :
             print("We are stocking energy ...")
-            self.stock += self.energy - self.demands
+            self.stock += new_energy - new_demand
+            print(self.stock)
         else : 
             print("Ok")
-
+"""
 c1 = Central_Gaz(10,1,5,100)
 c2 = Central_Nucleaire(70,1,5,100)
 c3 = Central_Solaire(80,1,5,100)
@@ -64,3 +68,4 @@ s1 = Stock(0,0,0) #On crée une boite de stockage
 s1.update(energy_total,demande_total) #On regarde si la demande et la production d'energie ont changé
 print(s1.stock) #Si la productton > demande on stock la difference dans S1
 
+"""
