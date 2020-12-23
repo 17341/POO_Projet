@@ -15,6 +15,7 @@ class Ville(Consommateur):
         self.zip = zip_code
 
 
+
 class Entreprise(Consommateur):
     def __init__(self,consumption,price,name,activity):
         super().__init__(consumption,price,name)

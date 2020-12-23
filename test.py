@@ -28,3 +28,20 @@ def show_table(table):
     df = pd.DataFrame(dict)
     df.isnull()
     print(df)
+
+
+"""
+l1 = Line(50,"Line1")
+l2 = Line(100,"Line2")
+l3 = Line(70,"Line3")
+l4 = Line(70,"Line4")
+ 
+n1 = Noeud(1000,"n1",1,[l1,l2])
+n2 = Noeud(1000,"n1",1,[l3,l2])
+n3 = Noeud(1000,"n1",1,[l4,l2])
+
+n3.add_line(l1)
+n1.lines_names()
+n2.lines_names()
+n3.lines_names()
+"""
