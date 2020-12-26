@@ -4,7 +4,6 @@ class Line:
         self.status = status
         self.name = name
         self.connexions= connexions 
-       
 
     def check(self,current_power):
         if self.status:

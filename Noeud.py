@@ -2,10 +2,11 @@ from typing import List
 from ligne import *
 
 class Noeud:
-    def __init__(self,max_power,name,lines: List[Line]):
+    def __init__(self,max_power,name,lines: List[Line], power= 0):
         self.max_power = max_power
         self.name = name
         self.lines = lines 
+        self.power = power
         self.verify()
 
     def verify(self):
@@ -44,8 +45,8 @@ class Noeud:
 
 class Noeud_Concentration(Noeud):
     def __init__(self,max_power,name,lines,output_line):
-        super().__init__(max_power,name, lines) #CO2 == 0
         self.output_line = output_line
+        super().__init__(max_power,name, lines) #CO2 == 0
         self.verify_output()
 
     def verify_output(self):
@@ -57,8 +58,8 @@ class Noeud_Concentration(Noeud):
 class Noeud_Distribution(Noeud):
 
     def __init__(self,max_power,name ,lines,input_line):
-        self.input_line = input_line
         super().__init__(max_power,name,lines)
+        self.input_line = input_line
         self.verify_input()
 
     def verify_input(self):
@@ -67,7 +68,7 @@ class Noeud_Distribution(Noeud):
         else : 
             print("Error output")
 
-
+"""
 l1 = Line(50,"Line1")
 l2 = Line(100,"Line2")
 l3 = Line(70,"Line3")
@@ -90,3 +91,4 @@ n3 = Noeud_Concentration(1000,'Nc3',[l4,l5,l2],l6)
 n3 = Noeud_Concentration(1000,'Nc3',[l9,l5,l4],l8)
 
 n3.lines_names()
+"""

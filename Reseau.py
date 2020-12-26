@@ -3,7 +3,7 @@ from Central import *
 
 class Reseau:
 
-    def __init__(self,consommateurs,centrales):
+    def __init__(self,consommateurs = [],centrales = []):
         self.consommateurs = consommateurs
         self.centrales = centrales
     

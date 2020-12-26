@@ -34,14 +34,14 @@ class Market:
     def print_infos(self):
         print(self.pays, self.prix_de_vente, self.prix_achat, self.distance, self.quantity)
         
-
+"""
 cameroun = Market("Cameroun", 10, 19, 6000, 1000)
 liban = Market("Liban", 100, 87, 600, 500)
 markets = [cameroun,liban]
 
 for elem in markets:
     elem.print_infos()
-
+"""
 def best_market(liste_markets):
     best_pays_buy= liste_markets[0].pays
     best_pays_sell = liste_markets[0].pays

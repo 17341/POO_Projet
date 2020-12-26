@@ -1,32 +1,15 @@
 from Distrubuteur import *
-from Meteo import Meteo
+from Meteo import *
+from Market import *
 from Central import *
 from Reseau import *
 from Consommateur import *
+from ligne import *
+from Noeud import *
 
 import pandas as pd
 import time
 import random as r
-
-d = Distributeur()
-m_j1= Meteo(20,50,'Ensoleillé')
-s1 = Stock(0,0,"Stock")
-
-cons1 = Consommateur(20,5,'kola')
-ville1 = Ville(10,2,'kola',1090)
-entreprise1 = Entreprise(110,33,'kola','economy')
-
-c1 = Central_Gaz(10,1,5,"Gaz")
-c2 = Central_Nucleaire(70,1,5,"Nucleaire")
-c3 = Central_Solaire(80,1,5,'Solaire')
-
-
-
-r1 = Reseau([cons1,ville1,entreprise1],[c1,c2,c3])
-d.update(r1.consommateurs,r1.centrales)
-
-
-d.verify(s1)
 
 def show_centrales(table):
     dict = {'Energy' : [],'Cost' : [],'CO2' : [],'Name' : []}
@@ -37,15 +20,15 @@ def show_centrales(table):
         dict['CO2'].append(elem.co2)
         dict['Name'].append(elem.name)
         if elem.type == "Solaire" :
-            elem.update_infos(r.randint(0,10),r.randint(10,100),0)
+            elem.update_infos(r.randint(0,100))
         else :
-            elem.update_infos(r.randint(0,10),r.randint(10,100),r.randint(100,1000))
+            elem.update_infos(r.randint(0,100))
 
     df = pd.DataFrame(dict)
     df.isnull()
     print("Centrales ")
     print(df)
-    
+
 def show_consommateurs(table):
     dict = {'Consumption' : [],'Price' : [],'Name' : [] }
     
@@ -59,10 +42,45 @@ def show_consommateurs(table):
     print("Consommateurs ")
     print(df)
 
-while(1):
+
+lines_centrales = []
+lines_consommateurs = []
+
+#On crée les centrales avec leurs lignes initiales
+c1 = Central_Gaz(10,"Gaz")
+c2 = Central_Nucleaire(70,"Nucleaire")
+c3 = Central_Solaire(80,'Solaire',10)
+c4 = Parc_Eolienne(80,'Eolienne',8)
+
+
+liste_centrales = [c1,c2,c3,c4]
+
+for central in liste_centrales:   
+    lines_centrales.append(central.line)
+
+distributeur = Distributeur()
+
+nc1 = Noeud_Concentration(500,"Noeud-Centrale",lines_centrales,distributeur.input_line)
+
+cons1 = Consommateur(20,5,'kola',line = Line(100,"Line-Cons1"))
+ville1 = Ville(10,2,'kola',1090)
+entreprise1 = Entreprise(110,33,'kola','economy')
+
+liste_consommateurs = [cons1,ville1,entreprise1]
+
+for conso in liste_consommateurs:   
+    lines_consommateurs.append(conso.line)
+
+nd1 = Noeud_Distribution(500,"Noeud-Consommateur",lines_consommateurs,distributeur.output_line)
+
+reseau = Reseau(liste_consommateurs,liste_centrales)
+
+def run():
     print("##############################################################################################")          
-    show_centrales(r1.centrales)
+    show_centrales(reseau.centrales)
     print("\n")
-    show_consommateurs(r1.consommateurs)
+    show_consommateurs(reseau.consommateurs)
     time.sleep(2)
 
+while(1):
+    run()

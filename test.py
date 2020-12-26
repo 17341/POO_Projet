@@ -1,36 +1,25 @@
-# importing pandas as pd
-import pandas as pd
-import matplotlib.pyplot as plt
-# importing numpy as np
-import numpy as np
+while(1):
+    print("##############################################################################################")          
+    show_centrales(r1.centrales)
+    print("\n")
+    show_consommateurs(r1.consommateurs)
+    time.sleep(2)
 
-# dictionary of lists
-dict = {'First Score':[100, 90, np.nan, 95],
-        'Second Score': [30, 45, 56, np.nan],
-        'Third Score':[np.nan, 40, 80, 98]}
+d = Distributeur()
+m_j1= Meteo(20,50,'Ensoleillé')
+s1 = Stock(0,0,"Stock")
 
-# creating a dataframe from list
-df = pd.DataFrame(dict)
-
-# using isnull() function  
-df.isnull()
-
-df.plot()
-
-def show_table(table):
-    dict = {'Energy' : [],'Cost' : [],'CO2' : [] }
-
-    for elem in table:
-        dict['Energy'].append(elem.energy)
-        dict['Cost'].append(elem.cost)
-        dict['CO2'].append(elem.co2)
-
-    df = pd.DataFrame(dict)
-    df.isnull()
-    print(df)
+cons1 = Consommateur(20,5,'kola')
+ville1 = Ville(10,2,'kola',1090)
+entreprise1 = Entreprise(110,33,'kola','economy')
 
 
-"""
+
+r1 = Reseau([cons1,ville1,entreprise1],[c1,c2,c3])
+d.update(r1.consommateurs,r1.centrales)
+
+
+d.verify(s1)
 l1 = Line(50,"Line1")
 l2 = Line(100,"Line2")
 l3 = Line(70,"Line3")

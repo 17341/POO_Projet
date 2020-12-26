@@ -2,9 +2,11 @@ from Consommateur import *
 from Central import *
 
 class Distributeur:
-    def __init__(self,list_demands = [],list_energy= []):
+    def __init__(self,list_demands = [],list_energy= [],input_line= Line(500,"Input-Distributeur"),output_line= Line(500,"Output-Distributeur")):
         self.list_demands = list_demands
         self.list_energy  = list_energy
+        self.input_line = input_line
+        self.output_line = output_line
 
     def get_total(self, list):
         if list == 'demands':
