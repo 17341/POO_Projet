@@ -1,5 +1,6 @@
-class Market:
+markets_messages = []
 
+class Market:
     def __init__(self, pays, prix_de_vente, prix_achat, distance, quantity):
         self.pays = pays
         self.prix_de_vente=  prix_de_vente
@@ -26,13 +27,13 @@ class Market:
 
     def sell(self,quantity,consommateur):
         if quantity > self.quantity :
-            print("Error : U don't have enough supply!")
+            markets_messages.append("Error : U don't have enough supply!")
         else :
             self.update_market('quantity', self.quantity-quantity)
             consommateur.quantity += quantity
 
     def print_infos(self):
-        print(self.pays, self.prix_de_vente, self.prix_achat, self.distance, self.quantity)
+        markets_messages.append(self.pays, self.prix_de_vente, self.prix_achat, self.distance, self.quantity)
         
 """
 cameroun = Market("Cameroun", 10, 19, 6000, 1000)
@@ -55,7 +56,6 @@ def best_market(liste_markets):
         if elem.prix_achat > max_price:
             max_price = elem.prix_achat
             best_pays_buy = elem.pays
-        
+    markets_messages.append("Le meilleur marché du moment est le : ....")   
     return(best_pays_sell,best_pays_buy)
-
 

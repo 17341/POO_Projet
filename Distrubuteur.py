@@ -1,6 +1,8 @@
 from Consommateur import *
 from Central import *
 
+distributeur_messages = []
+
 class Distributeur:
     def __init__(self,list_demands = [],list_energy= [],input_line= Line(500,"Input-Distributeur"),output_line= Line(500,"Output-Distributeur")):
         self.list_demands = list_demands
@@ -24,16 +26,17 @@ class Distributeur:
         for consommateur in list_consommateur:
             new_list_demands.append(consommateur.consumption)
         self.list_demands = new_list_demands
+    
         for central in list_centrales:
-            new_list_energy.append(central.energy)
+            if central.type != "Stock":
+                new_list_energy.append(central.energy)
         self.list_energy  = new_list_energy
 
     def verify(self,stock):
-        
         if self.get_total('demands') == self.get_total('energy') :
-            print("Ok")
+            distributeur_messages.append("Ok")
         elif self.get_total('demands') > self.get_total('energy') :
-            print("WE NEED MORE ENERGY")
+            distributeur_messages.append("WE NEED MORE ENERGY")
             #get_more_energy() #Si le total de demandes est plus grand que le max d'energy que peut fournir les centrales ensemble --> On achetera ...
         else :
             stock.update(self.get_total('energy'),self.get_total('demands'))

@@ -1,5 +1,9 @@
+from numpy.lib.function_base import diff
 from ligne import *
-import time 
+import time
+
+
+centrales_messages = []
 
 class Central:
     def __init__(self,energy,name,line,type,status):
@@ -13,15 +17,21 @@ class Central:
             self.co2 = energy/10
         else:
             self.co2 = 0
+        
     def print_infos(self):
         print(f'Name: {self.name}   Production: {self.energy}W   Cost: {self.cost}€   CO2: {self.co2}')
 
     def update_infos(self,new_energy):
         if new_energy != self.energy:
-            print(f'Energy of {self.name} updated from {self.energy}MW to {new_energy}MW')
+            centrales_messages.append(f'Energy of {self.name} updated from {self.energy}MW to {new_energy}MW')
             self.energy = new_energy
+            self.line.check()
+            self.line.power = self.energy - 10
         else:
             self.energy = new_energy
+            self.line.check()
+            self.line.power = self.energy - 10
+           
         self.cost = new_energy/2
         if self.type == 'Nucleaire' or self.type == 'Gaz' :
             self.co2 = self.energy/10
@@ -30,11 +40,13 @@ class Central:
 
     def on(self):
         self.status = True
-        print(f"{self.name} is ON")    
+        self.line.connexions += 1
+        centrales_messages.append(f"{self.name} is ON")    
 
     def off(self):
         self.status = False
-        print(f"{self.name} is OFF")      
+        self.line.connexions -= 1
+        centrales_messages.append(f"{self.name} is OFF")      
               
 class Central_Solaire(Central):
 
@@ -57,12 +69,14 @@ class Central_Nucleaire(Central):
     def on(self):
         time.sleep(2)
         self.status = True
-        print(f"{self.name} is ON")    
+        self.line.connexions += 1
+        centrales_messages.append(f"{self.name} is ON")    
 
     def off(self):
         time.sleep(2)
         self.status = False
-        print(f"{self.name} is OFF")      
+        self.line.connexions += 1
+        centrales_messages.append(f"{self.name} is OFF")      
 
 class Central_Gaz(Central):
     
@@ -72,16 +86,19 @@ class Central_Gaz(Central):
 class Stock(Central):
     
     def __init__(self,energy,stock,name,line= Line(300,"Ligne-Stock"),type = 'Stock',status= False):
-        super().__init__(energy,0,0,name,line,type,status) #CO2 == 0
-        self.stock = stock 
+        super().__init__(energy,name,line,type,status) #CO2 == 0
+        self.stock = stock
 
     def update(self,new_energy,new_demand):
         if  new_energy > new_demand :
-            print("We are stocking energy ...")
-            self.stock += new_energy - new_demand
-            print(self.stock)
+            centrales_messages.append("We are stocking energy ...")
+            self.energy = new_energy - new_demand 
+            self.update_infos(self.energy)
+            self.line.power += 10
+            self.stock += self.energy
+            centrales_messages.append(self.energy)
         else : 
-            print("Ok")
+            centrales_messages.append("Ok")
 """
 c1 = Central_Gaz(10,1,5,100)
 c2 = Central_Nucleaire(70,1,5,100)

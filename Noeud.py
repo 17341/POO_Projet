@@ -1,6 +1,8 @@
 from typing import List
 from ligne import *
 
+noeuds_messages = []
+
 class Noeud:
     def __init__(self,max_power,name,lines: List[Line], power= 0):
         self.max_power = max_power
@@ -14,12 +16,11 @@ class Noeud:
         for line in self.lines :
             if line.connexions < 2:
                 if type(line) != Line:
-                    print(f'{line.name} is not a line!')
+                    noeuds_messages.append(f'{line.name} is not a line!')
                 else:
                     line.connexions += 1
-                    line.status = True
             else: 
-                print(f'{line.name} already used')
+                noeuds_messages.append(f'{line.name} already used')
                 remove_list.append(line)
 
         for elem in remove_list:        
@@ -30,18 +31,18 @@ class Noeud:
             self.lines.append(line)
             self.verify()
         else: 
-            print(f'{line} is not a line')
+            noeuds_messages.append(f'{line} is not a line')
 
     def remove_line(self,line):
         if type(line) == Line:
             self.lines.remove(line)
             self.verify()
         else: 
-            print(f'{line} is not a line')
+            noeuds_messages.append(f'{line} is not a line')
 
     def lines_names(self):
         for line in self.lines:
-            print(line.name)
+            noeuds_messages.append(line.name)
 
 class Noeud_Concentration(Noeud):
     def __init__(self,max_power,name,lines,output_line):
@@ -51,9 +52,9 @@ class Noeud_Concentration(Noeud):
 
     def verify_output(self):
         if type(self.output_line) == Line and self.output_line.connexions < 2:
-            print("OK output ")
+            noeuds_messages.append("OK output ")
         else : 
-            print("Error output")
+            noeuds_messages.append("Error output")
 
 class Noeud_Distribution(Noeud):
 
@@ -64,9 +65,9 @@ class Noeud_Distribution(Noeud):
 
     def verify_input(self):
         if type(self.input_line) == Line and (self.input_line).connexions < 2:
-            print("OK input")
+            noeuds_messages.append("OK input")
         else : 
-            print("Error output")
+            noeuds_messages.append("Error output")
 
 """
 l1 = Line(50,"Line1")
