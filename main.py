@@ -7,62 +7,7 @@ from Consommateur import *
 from ligne import *
 from Noeud import *
 
-import pandas as pd
 import time
-import random as r
-
-
-def show_centrales(table):
-  
-    dict = {'Energy [MW]' : [],'Cost [€]' : [],'CO2 [g/kWh]' : [],'Name' : [],'Status' : []}
-    for elem in table:
-        if elem.type != "Stock" :
-            elem.update_infos(r.randint(10,100))
-            dict['Energy [MW]'].append(elem.energy)
-            dict['Cost [€]'].append(elem.cost)
-            dict['CO2 [g/kWh]'].append(elem.co2)
-            dict['Name'].append(elem.name)
-            dict['Status'].append(elem.status)
-        else:
-            dict['Energy [MW]'].append(elem.stock)
-            dict['Cost [€]'].append(elem.cost)
-            dict['CO2 [g/kWh]'].append(elem.co2)
-            dict['Name'].append(elem.name)
-            dict['Status'].append(elem.status)
-
-    df = pd.DataFrame(dict)
-    df.isnull()
-    print("Centrales ")
-    print(df)
-
-def show_consommateurs(table):
-    dict = {'Consumption [MW]' : [],'Price' : [],'Name' : [], 'Type' : []}
-    for elem in table:
-        elem.update_consumption(r.randint(0,100))
-        dict['Consumption [MW]'].append(elem.consumption)
-        dict['Price'].append(elem.price)
-        dict['Name'].append(elem.name)
-        dict['Type'].append(elem.type)
-
-    df = pd.DataFrame(dict)
-    df.isnull()
-    print("Consommateurs ")
-    print(df)
-
-def show_lines(table):
-    dict = {'Power [MW]' : [],'Name' : [],'Status' : [],'Connexions' : []  }
-    
-    for elem in table:
-        dict['Power [MW]'].append(elem.power)
-        dict['Name'].append(elem.name)
-        dict['Status'].append(elem.status)
-        dict['Connexions'].append(elem.connexions)
-
-    df = pd.DataFrame(dict)
-    df.isnull()
-    print("Lines ")
-    print(df)
-
 
 lines_centrales = []
 lines_consommateurs = []
@@ -78,7 +23,8 @@ liste_centrales = [c1,c2,c3,c4,stock]
 
 for central in liste_centrales:   
     lines_centrales.append(central.line)
-    central.on()
+    if central != stock:
+        central.on()
 
 distributeur = Distributeur()
 

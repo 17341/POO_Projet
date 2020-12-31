@@ -1,4 +1,6 @@
 from ligne import *
+import pandas as pd
+import random as r
 
 consommateurs_messages = []
 
@@ -39,13 +41,30 @@ class Etranger(Consommateur):
 
 class Dissipateur(Consommateur):
 
-    def __init__(self,consumption,production,type = "Dissipateur",line = Line(100,"Line-Dissipateur")):
+    def __init__(self,consumption,production,type = "Dissipateur",line = Line(1000,"Line-Dissipateur")):
         super().__init__(consumption,"","",line,type)
         self.production = production
 
-    def update_production(self,new_production):
+    def update_production(self,new_consumption,new_production):
+        self.consumption = new_consumption
         self.production = new_production
         if self.production > self.consumption :
-            consommateurs_messages.append("We are dissipating energy ...")
+            consommateurs_messages.append(f"Dissipating {self.production -self.consumption}[MW] of energy ! ")
+            return True
         else : 
             consommateurs_messages.append("Ok")
+            return False
+
+def show_consommateurs(table):
+    dict = {'Consumption [MW]' : [],'Price' : [],'Name' : [], 'Type' : []}
+    for elem in table:
+        elem.update_consumption(r.randint(0,100))
+        dict['Consumption [MW]'].append(elem.consumption)
+        dict['Price'].append(elem.price)
+        dict['Name'].append(elem.name)
+        dict['Type'].append(elem.type)
+
+    df = pd.DataFrame(dict)
+    df.isnull()
+    print("Consommateurs ")
+    print(df)

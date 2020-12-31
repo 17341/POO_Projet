@@ -1,4 +1,5 @@
 lines_messages = []
+import pandas as pd
 
 class Line:
     def __init__(self,max_power,name,status = False,connexions = 0 ,power = 0):
@@ -27,3 +28,17 @@ class Line:
             lines_messages.append(f'{self.name} is not connected !')
 
 
+
+def show_lines(table):
+    dict = {'Power [MW]' : [],'Name' : [],'Status' : [],'Connexions' : []  }
+    
+    for elem in table:
+        dict['Power [MW]'].append(elem.power)
+        dict['Name'].append(elem.name)
+        dict['Status'].append(elem.status)
+        dict['Connexions'].append(elem.connexions)
+
+    df = pd.DataFrame(dict)
+    df.isnull()
+    print("Lines ")
+    print(df)
