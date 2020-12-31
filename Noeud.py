@@ -43,10 +43,11 @@ class Noeud:
     def lines_names(self):
         for line in self.lines:
             noeuds_messages.append(line.name)
-
+        
 class Noeud_Concentration(Noeud):
-    def __init__(self,max_power,name,lines,output_line):
+    def __init__(self,max_power,name,lines,output_line,type = "Concentration"):
         self.output_line = output_line
+        self.type = type
         super().__init__(max_power,name, lines) #CO2 == 0
         self.verify_output()
 
@@ -58,9 +59,10 @@ class Noeud_Concentration(Noeud):
 
 class Noeud_Distribution(Noeud):
 
-    def __init__(self,max_power,name ,lines,input_line):
+    def __init__(self,max_power,name ,lines,input_line,type = "Distribution"):
         super().__init__(max_power,name,lines)
         self.input_line = input_line
+        self.type = type
         self.verify_input()
 
     def verify_input(self):
@@ -69,7 +71,7 @@ class Noeud_Distribution(Noeud):
         else : 
             noeuds_messages.append("Error output")
 
-"""
+
 l1 = Line(50,"Line1")
 l2 = Line(100,"Line2")
 l3 = Line(70,"Line3")
@@ -89,7 +91,18 @@ n2 = Noeud_Distribution(1000,'Nd2',[l4,l5],l1)
 n3 = Noeud_Concentration(1000,'Nc3',[l4,l5,l2],l6)
 
 
-n3 = Noeud_Concentration(1000,'Nc3',[l9,l5,l4],l8)
-
-n3.lines_names()
-"""
+def show_noeuds(table):
+    print("Noeuds")
+    for elem in table:
+        if elem.type == "Concentration":
+            lines_name = []
+            for line in elem.lines:
+                lines_name.append(line.name)
+            print(f"Name : {elem.name} \t Type : {elem.type} \t Power : {elem.power} \t Input line(s) : {lines_name} \t Output line(s)  : {elem.output_line.name}")
+        elif elem.type == "Distribution":
+            lines_name = []
+            for line in elem.lines:
+                lines_name.append(line.name)
+            print(f"Name : {elem.name} \t Type : {elem.type} \t Power : {elem.power} \t Input line(s) : {elem.input_line.name} \t Output line(s)  : {lines_name}")
+        else :
+            pass

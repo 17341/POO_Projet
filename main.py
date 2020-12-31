@@ -41,11 +41,11 @@ for conso in liste_consommateurs:
 
 nd1 = Noeud_Distribution(500,"Noeud-Consommateur",lines_consommateurs,distributeur.output_line)
 
-reseau = Reseau(liste_consommateurs,liste_centrales)
+reseau = Reseau(liste_consommateurs,liste_centrales,[nc1,nd1])
 
 def run():
     messages = [centrales_messages,consommateurs_messages,markets_messages,distributeur_messages,lines_messages,noeuds_messages,reseau_messages]
-    print("##############################################################################################")    
+    print("###########################################")    
     print("\n")  
     distributeur.update(reseau.consommateurs,reseau.centrales)
     distributeur.verify(stock = stock)
@@ -57,6 +57,8 @@ def run():
     show_consommateurs(reseau.consommateurs)
     print("\n")
     show_lines(lines_centrales+ lines_consommateurs)
+    print("\n")
+    show_noeuds(reseau.noeuds)
     print("\n")
     print("################ MESSAGES ################")
     for list_msg in messages:
