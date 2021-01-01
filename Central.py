@@ -8,11 +8,6 @@ from Market import *
 
 centrales_messages = []
 
-cameroun = Market("Cameroun", 10, 19, 6000, 1000)
-liban = Market("Liban", 100, 87, 600, 500)
-our_market= Market("ECAM", 100, 87, 0, 0)
-markets = [cameroun,liban,our_market]
-
 class Central:
     def __init__(self,energy,name,line,type,status):
         self.energy = energy
@@ -101,56 +96,54 @@ class Stock(Central):
         self.can_dissipate = True
 
     def update(self,new_energy,new_demand):
-        quantity = (new_energy - new_demand) - (self.max_stock - self.stock)
-        our_market.quantity = quantity
-        if self.can_dissipate :
-            if self.dissipateur.update_production((self.max_stock - self.stock), new_energy - new_demand ):
-                self.stock = self.max_stock
-                self.can_dissipate = False
-            elif self.stock <= self.max_stock:
-                if  new_energy > new_demand :
-                    centrales_messages.append("We are stocking energy ...")
-                    self.line.connexions = 2
-                    self.line.status = True
-                    self.status = True
-                    self.energy = new_energy - new_demand 
-                    self.update_infos(self.energy)
-                    self.line.power += 10
-                    self.stock += self.energy
-                    centrales_messages.append(self.energy)
-                else : 
-                    self.line.connexions = 1
-                    self.line.status = False
-                    self.line.power = 0
-                    self.status = False
-                    centrales_messages.append("Ok")
-        else:
-            if quantity > 0 : 
-                our_market.sell(quantity,best_market(markets)[0])
-                show_market(markets)
-            elif quantity < 0 :
-                pass
+        if (new_energy - new_demand) > 0 :
+            quantity = (new_energy - new_demand) - (self.max_stock - self.stock)
+            if self.can_dissipate :
+                if self.dissipateur.update_production((self.max_stock - self.stock), new_energy - new_demand ):
+                    self.stock = self.max_stock
+                    self.can_dissipate = False
+                elif self.stock <= self.max_stock:
+                    if  new_energy > new_demand :
+                        centrales_messages.append("We are stocking energy ...")
+                        self.line.connexions = 2
+                        self.line.status = True
+                        self.status = True
+                        self.energy = new_energy - new_demand 
+                        self.update_infos(self.energy)
+                        self.line.power += 10
+                        self.stock += self.energy
+                        centrales_messages.append(self.energy)
+                    else : 
+                        self.line.connexions = 1
+                        self.line.status = False
+                        self.line.power = 0
+                        self.status = False
+                        centrales_messages.append("Ok")
             else:
-                pass
+                self.line.connexions = 1
+                self.line.status = False
+                self.line.power = 0
+                self.status = False
+                our_market.quantity = quantity
+                our_market.sell(quantity,best_market_sell(markets))
+                show_market(markets)
             
-"""
-c1 = Central_Gaz(10,1,5,100)
-c2 = Central_Nucleaire(70,1,5,100)
-c3 = Central_Solaire(80,1,5,100)
+        elif (new_energy - new_demand) < 0 :
+            self.line.connexions = 1
+            self.line.status = False
+            self.line.power = 0
+            self.status = False
+            quantity = new_demand-new_energy 
+            if self.stock >= quantity :
+                self.stock -= quantity
+                centrales_messages.append(f"We took {quantity} [MW] of energy from our stock")
+            else:
+                our_market.buy(quantity,best_market_buy(markets))
+                show_market(markets)
+        else:
+            pass
+            
 
-centrales= [c1,c2,c3]
-
-demande_total = c1.demands
-energy_total = 0 
-
-for central in centrales:
-    energy_total += central.energy
-
-s1 = Stock(0,0,0) #On crée une boite de stockage 
-s1.update(energy_total,demande_total) #On regarde si la demande et la production d'energie ont changé
-print(s1.stock) #Si la productton > demande on stock la difference dans S1
-
-"""
 def show_centrales(table):
       
     dict = {'Energy [MW]' : [],'Cost [€]' : [],'CO2 [g/kWh]' : [],'Name' : [],'Status' : []}
@@ -173,3 +166,23 @@ def show_centrales(table):
     df.isnull()
     print("Centrales ")
     print(df)
+    
+
+"""
+c1 = Central_Gaz(10,1,5,100)
+c2 = Central_Nucleaire(70,1,5,100)
+c3 = Central_Solaire(80,1,5,100)
+
+centrales= [c1,c2,c3]
+
+demande_total = c1.demands
+energy_total = 0 
+
+for central in centrales:
+    energy_total += central.energy
+
+s1 = Stock(0,0,0) #On crée une boite de stockage 
+s1.update(energy_total,demande_total) #On regarde si la demande et la production d'energie ont changé
+print(s1.stock) #Si la productton > demande on stock la difference dans S1
+
+"""

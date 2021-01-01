@@ -38,6 +38,5 @@ class Distributeur:
         elif self.get_total('demands') > self.get_total('energy') :
             distributeur_messages.append("WE NEED MORE ENERGY")
             stock.update(self.get_total('energy'),self.get_total('demands'))
-            #get_more_energy() #Si le total de demandes est plus grand que le max d'energy que peut fournir les centrales ensemble --> On achetera ...
         else :
             stock.update(self.get_total('energy'),self.get_total('demands'))

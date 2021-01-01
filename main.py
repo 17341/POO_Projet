@@ -16,7 +16,8 @@ lines_consommateurs = []
 c1 = Central_Gaz(0,"Gaz")
 c2 = Central_Nucleaire(0,"Nucleaire")
 c3 = Central_Solaire(0,'Solaire',10)
-c4 = Parc_Eolienne(0,'Eolienne',8)
+c4 = Parc_Eolienne(0,'Eolienne',10)
+
 stock = Stock(0,0,'Stock')
 
 liste_centrales = [c1,c2,c3,c4,stock]
@@ -46,11 +47,10 @@ reseau = Reseau(liste_consommateurs,liste_centrales,[nc1,nd1])
 def run():
     messages = [centrales_messages,consommateurs_messages,markets_messages,distributeur_messages,lines_messages,noeuds_messages,reseau_messages]
     print("###########################################")    
+    show_meteo(meteos)
     print("\n")  
     distributeur.update(reseau.consommateurs,reseau.centrales)
     distributeur.verify(stock = stock)
-    print(distributeur.get_total('energy'))
-    print(distributeur.get_total('demands'))
     print("\n")  
     show_centrales(reseau.centrales)
     print("\n")

@@ -72,6 +72,22 @@ class Noeud_Distribution(Noeud):
             noeuds_messages.append("Error output")
 
 
+def show_noeuds(table):
+    print("Noeuds")
+    for elem in table:
+        if elem.type == "Concentration":
+            lines_name = []
+            for line in elem.lines:
+                lines_name.append(line.name)
+            print(f"Name : {elem.name} \t Type : {elem.type} \t Power : {elem.power} \t Input line(s) : {lines_name} \t Output line(s)  : {elem.output_line.name}")
+        elif elem.type == "Distribution":
+            lines_name = []
+            for line in elem.lines:
+                lines_name.append(line.name)
+            print(f"Name : {elem.name} \t Type : {elem.type} \t Power : {elem.power} \t Input line(s) : {elem.input_line.name} \t Output line(s)  : {lines_name}")
+        else :
+            pass
+"""
 l1 = Line(50,"Line1")
 l2 = Line(100,"Line2")
 l3 = Line(70,"Line3")
@@ -89,20 +105,4 @@ n2 = Noeud_Distribution(1000,'Nd2',[l4,l5],l1)
 
 
 n3 = Noeud_Concentration(1000,'Nc3',[l4,l5,l2],l6)
-
-
-def show_noeuds(table):
-    print("Noeuds")
-    for elem in table:
-        if elem.type == "Concentration":
-            lines_name = []
-            for line in elem.lines:
-                lines_name.append(line.name)
-            print(f"Name : {elem.name} \t Type : {elem.type} \t Power : {elem.power} \t Input line(s) : {lines_name} \t Output line(s)  : {elem.output_line.name}")
-        elif elem.type == "Distribution":
-            lines_name = []
-            for line in elem.lines:
-                lines_name.append(line.name)
-            print(f"Name : {elem.name} \t Type : {elem.type} \t Power : {elem.power} \t Input line(s) : {elem.input_line.name} \t Output line(s)  : {lines_name}")
-        else :
-            pass
+"""

@@ -1,1 +1,1 @@
-onsommateurs
+ self.power = power
