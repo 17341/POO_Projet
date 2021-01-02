@@ -18,7 +18,7 @@ class Consommateur:
         consommateurs_messages.append(f'Demands of {self.name} updated from {self.consumption}MW to {new_consumption}MW')
         self.consumption = new_consumption
         self.price = self.consumption / 10
-        self.line.power = self.consumption - 10
+        self.line.power = self.consumption 
 
 class Ville(Consommateur):
     def __init__(self,consumption,price,name,zip_code,type = "Ville",line = Line(100,"Line-Ville")):

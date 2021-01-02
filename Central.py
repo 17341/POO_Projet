@@ -31,7 +31,7 @@ class Central:
         else:
             pass
         self.energy = new_energy
-        self.line.power = self.energy - 10
+        self.line.power = self.energy  
         self.cost = new_energy/2
         if self.type == 'Nucleaire' or self.type == 'Gaz' :
             self.co2 = self.energy/10
@@ -61,7 +61,7 @@ class Central_Solaire(Central):
     def check_meteo(self,meteo):
         if meteo.status == "Soleil":
             self.energy = meteo.temperature / 2
-            self.line.power = self.energy - 10
+            self.line.power = self.energy  
         else:
             self.energy = 0
             self.line.power = self.energy
@@ -75,9 +75,9 @@ class Parc_Eolienne(Central):
         if meteo.wind_speed < 120:
             if meteo.wind_speed > 15:
                 self.energy =meteo.wind_speed/ 2
-                self.line.power = self.energy - 10
-                if (self.energy - 10) > 0 :
-                    self.line.power = self.energy - 10
+                self.line.power = self.energy  
+                if (self.energy ) > 0 :
+                    self.line.power = self.energy  
                 else:
                     self.line.power = 0
             else:
@@ -138,7 +138,7 @@ class Stock(Central):
                         centrales_messages.append("We are stocking energy ...")
                         self.energy = new_energy - new_demand 
                         self.update_infos(self.energy)
-                        self.line.power += 10
+                        
                         self.stock += self.energy
                         centrales_messages.append(self.energy)
                     else : 

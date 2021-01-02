@@ -43,7 +43,19 @@ class Noeud:
     def lines_names(self):
         for line in self.lines:
             noeuds_messages.append(line.name)
-        
+
+    def update(self):
+        list_power_line = []
+        for line in self.lines :
+            list_power_line.append(line.power)
+        self.power = sum(list_power_line)
+
+    def check(self):
+        if self.power > self.max_power:
+            noeuds_messages.append(f"WARNING : TOO MUCH ENERGY IN {self.name}")
+        else:
+            noeuds_messages.append(f"The current power in {self.name} is {self.power} ")
+
 class Noeud_Concentration(Noeud):
     def __init__(self,max_power,name,lines,output_line,type = "Concentration"):
         self.output_line = output_line
@@ -56,6 +68,7 @@ class Noeud_Concentration(Noeud):
             noeuds_messages.append("OK output ")
         else : 
             noeuds_messages.append("Error output")
+
 
 class Noeud_Distribution(Noeud):
 
@@ -75,6 +88,8 @@ class Noeud_Distribution(Noeud):
 def show_noeuds(table):
     print("Noeuds")
     for elem in table:
+        elem.update()
+        elem.check()
         if elem.type == "Concentration":
             lines_name = []
             for line in elem.lines:

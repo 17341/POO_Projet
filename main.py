@@ -40,7 +40,7 @@ liste_consommateurs = [cons1,ville1,entreprise1]
 for conso in liste_consommateurs:   
     lines_consommateurs.append(conso.line)
 
-nd1 = Noeud_Distribution(500,"Noeud-Consommateur",lines_consommateurs,distributeur.output_line)
+nd1 = Noeud_Distribution(100,"Noeud-Consommateur",lines_consommateurs,distributeur.output_line)
 
 reseau = Reseau(liste_consommateurs,liste_centrales,[nc1,nd1])
 
