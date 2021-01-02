@@ -17,7 +17,7 @@ class Consommateur:
     def update_consumption(self,new_consumption):
         consommateurs_messages.append(f'Demands of {self.name} updated from {self.consumption}MW to {new_consumption}MW')
         self.consumption = new_consumption
-        self.line.check()
+        self.price = self.consumption / 10
         self.line.power = self.consumption - 10
 
 class Ville(Consommateur):
@@ -58,11 +58,12 @@ class Dissipateur(Consommateur):
 def show_consommateurs(table):
     dict = {'Consumption [MW]' : [],'Price' : [],'Name' : [], 'Type' : []}
     for elem in table:
-        elem.update_consumption(r.randint(0,100))
+        elem.line.check()
         dict['Consumption [MW]'].append(elem.consumption)
         dict['Price'].append(elem.price)
         dict['Name'].append(elem.name)
         dict['Type'].append(elem.type)
+       
 
     df = pd.DataFrame(dict)
     df.isnull()

@@ -5,6 +5,7 @@ import pandas as pd
 import random as r
 from Consommateur import *
 from Market import *
+from Meteo import *
 
 centrales_messages = []
 
@@ -29,11 +30,8 @@ class Central:
             centrales_messages.append(f'Energy of {self.name} updated from {self.energy}MW to {new_energy}MW')
         else:
             pass
-
         self.energy = new_energy
-        self.line.check()
         self.line.power = self.energy - 10
-           
         self.cost = new_energy/2
         if self.type == 'Nucleaire' or self.type == 'Gaz' :
             self.co2 = self.energy/10
@@ -42,27 +40,53 @@ class Central:
 
     def on(self):
         self.status = True
-        self.line.connexions += 1
         centrales_messages.append(f"{self.name} is ON")    
 
     def off(self):
         self.status = False
-        self.line.connexions -= 1
         centrales_messages.append(f"{self.name} is OFF")      
+    
+    def check(self):
+        if self.energy == 0 :
+            self.status = False
+            centrales_messages.append(f'{self.name} has no energy')
+        else:
+            self.status = True
               
 class Central_Solaire(Central):
 
-    def __init__(self,energy,name,meteo, line= Line(100,"Ligne-Solaire"),type = 'Solaire',status= False):
+    def __init__(self,energy,name, line= Line(100,"Ligne-Solaire"),type = 'Solaire',status= False):
         super().__init__(energy,name,line,type,status) 
-        self.meteo = meteo
-        
 
-class Parc_Eolienne(Central_Solaire):
+    def check_meteo(self,meteo):
+        if meteo.status == "Soleil":
+            self.energy = meteo.temperature / 2
+            self.line.power = self.energy - 10
+        else:
+            self.energy = 0
+            self.line.power = self.energy
 
-    def __init__(self,energy,name,meteo,line= Line(100,"Ligne-Eolienne"),type = 'Eolienne',status= False):
-        super().__init__(energy,name,meteo,line,type,status) 
+class Parc_Eolienne(Central):
+
+    def __init__(self,energy,name,line= Line(100,"Ligne-Eolienne"),type = 'Eolienne',status= False):
+        super().__init__(energy,name,line,type,status) 
         
-        
+    def check_meteo(self,meteo):
+        if meteo.wind_speed < 120:
+            if meteo.wind_speed > 15:
+                self.energy =meteo.wind_speed/ 2
+                self.line.power = self.energy - 10
+                if (self.energy - 10) > 0 :
+                    self.line.power = self.energy - 10
+                else:
+                    self.line.power = 0
+            else:
+                self.energy = 0
+                self.line.power = self.energy
+        else:
+            self.energy = 0
+            self.line.power = self.energy
+
 class Central_Nucleaire(Central):
 
     def __init__(self,energy,name,line= Line(100,"Ligne-Nucleaire"),type = 'Nucleaire',status= False):
@@ -95,7 +119,14 @@ class Stock(Central):
         self.dissipateur.consumption = max_stock - stock
         self.can_dissipate = True
 
+    def verify_stock(self):
+        if self.stock < self.max_stock :
+            self.can_dissipate = True
+        else:
+            self.can_dissipate = False
+
     def update(self,new_energy,new_demand):
+        self.verify_stock()
         if (new_energy - new_demand) > 0 :
             quantity = (new_energy - new_demand) - (self.max_stock - self.stock)
             if self.can_dissipate :
@@ -105,62 +136,73 @@ class Stock(Central):
                 elif self.stock <= self.max_stock:
                     if  new_energy > new_demand :
                         centrales_messages.append("We are stocking energy ...")
-                        self.line.connexions = 2
-                        self.line.status = True
-                        self.status = True
                         self.energy = new_energy - new_demand 
                         self.update_infos(self.energy)
                         self.line.power += 10
                         self.stock += self.energy
                         centrales_messages.append(self.energy)
                     else : 
-                        self.line.connexions = 1
-                        self.line.status = False
                         self.line.power = 0
-                        self.status = False
                         centrales_messages.append("Ok")
             else:
-                self.line.connexions = 1
-                self.line.status = False
                 self.line.power = 0
-                self.status = False
                 our_market.quantity = quantity
                 our_market.sell(quantity,best_market_sell(markets))
                 show_market(markets)
             
         elif (new_energy - new_demand) < 0 :
-            self.line.connexions = 1
-            self.line.status = False
             self.line.power = 0
-            self.status = False
             quantity = new_demand-new_energy 
             if self.stock >= quantity :
                 self.stock -= quantity
+                self.line.power = quantity
                 centrales_messages.append(f"We took {quantity} [MW] of energy from our stock")
             else:
+                
                 our_market.buy(quantity,best_market_buy(markets))
                 show_market(markets)
         else:
-            pass
-            
-
+            pass  
+        
 def show_centrales(table):
-      
     dict = {'Energy [MW]' : [],'Cost [€]' : [],'CO2 [g/kWh]' : [],'Name' : [],'Status' : []}
     for elem in table:
-        if elem.type != "Stock" :
-            elem.update_infos(r.randint(10,100))
+        if elem.type == "Solaire" :
+            elem.line.check()
+            elem.check()
             dict['Energy [MW]'].append(elem.energy)
             dict['Cost [€]'].append(elem.cost)
             dict['CO2 [g/kWh]'].append(elem.co2)
             dict['Name'].append(elem.name)
             dict['Status'].append(elem.status)
+            
+        elif elem.type == "Eolienne" :
+            elem.line.check()
+            elem.check()
+            dict['Energy [MW]'].append(elem.energy)
+            dict['Cost [€]'].append(elem.cost)
+            dict['CO2 [g/kWh]'].append(elem.co2)
+            dict['Name'].append(elem.name)
+            dict['Status'].append(elem.status)
+
+        elif elem.type != "Stock" :
+            elem.line.check()
+            elem.check()
+            dict['Energy [MW]'].append(elem.energy)
+            dict['Cost [€]'].append(elem.cost)
+            dict['CO2 [g/kWh]'].append(elem.co2)
+            dict['Name'].append(elem.name)
+            dict['Status'].append(elem.status)
+
         else:
+            elem.line.check()
+            elem.check()
             dict['Energy [MW]'].append(elem.stock)
             dict['Cost [€]'].append(elem.cost)
             dict['CO2 [g/kWh]'].append(elem.co2)
             dict['Name'].append(elem.name)
             dict['Status'].append(elem.status)
+
 
     df = pd.DataFrame(dict)
     df.isnull()

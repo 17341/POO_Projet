@@ -18,11 +18,10 @@ meteos = Meteo(0,50,"Neige")
 
 def show_meteo(meteo):
     dict = {'Temperature [°C]' : [],'Wind Speed [km/h]' : [],'Status' : []}
-    meteo.update(r.randint(-10,40),r.randint(10,120),r.choice(["Neige","Pluie","Soleil"]))
+    meteo.update(r.randint(20,40),r.randint(10,120),r.choice(["Neige","Pluie","Soleil"]))
     dict['Temperature [°C]'].append(meteo.temperature)
     dict['Wind Speed [km/h]'].append(meteo.wind_speed)
     dict['Status' ].append(meteo.status)
-
     df = pd.DataFrame(dict)
     df.isnull()
     print("Meteo ")

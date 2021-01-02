@@ -15,8 +15,8 @@ lines_consommateurs = []
 #On crée les centrales avec leurs lignes initiales
 c1 = Central_Gaz(0,"Gaz")
 c2 = Central_Nucleaire(0,"Nucleaire")
-c3 = Central_Solaire(0,'Solaire',10)
-c4 = Parc_Eolienne(0,'Eolienne',10)
+c3 = Central_Solaire(0,'Solaire')
+c4 = Parc_Eolienne(0,'Eolienne')
 
 stock = Stock(0,0,'Stock')
 
@@ -31,9 +31,9 @@ distributeur = Distributeur()
 
 nc1 = Noeud_Concentration(500,"Noeud-Centrale",lines_centrales,distributeur.input_line)
 
-cons1 = Consommateur(0,5,'kola',line = Line(100,"Line-Cons1"))
-ville1 = Ville(0,2,'kola',1090)
-entreprise1 = Entreprise(0,33,'kola','economy')
+cons1 = Consommateur(0,0,'kola',line = Line(100,"Line-Cons1"))
+ville1 = Ville(0,0,'kola',1090)
+entreprise1 = Entreprise(0,0,'kola','economy')
 
 liste_consommateurs = [cons1,ville1,entreprise1]
 
@@ -45,12 +45,10 @@ nd1 = Noeud_Distribution(500,"Noeud-Consommateur",lines_consommateurs,distribute
 reseau = Reseau(liste_consommateurs,liste_centrales,[nc1,nd1])
 
 def run():
-    messages = [centrales_messages,consommateurs_messages,markets_messages,distributeur_messages,lines_messages,noeuds_messages,reseau_messages]
+    messages = [distributeur_messages,centrales_messages,consommateurs_messages,markets_messages,lines_messages,noeuds_messages,reseau_messages]
     print("###########################################")    
     show_meteo(meteos)
     print("\n")  
-    distributeur.update(reseau.consommateurs,reseau.centrales)
-    distributeur.verify(stock = stock)
     print("\n")  
     show_centrales(reseau.centrales)
     print("\n")
@@ -71,6 +69,9 @@ def run():
             pass
     time.sleep(2)
     print("\n")  
+    distributeur.update(reseau.consommateurs,reseau.centrales)
+    distributeur.verify(stock = stock)
+    
     
 while(1):
     run()
