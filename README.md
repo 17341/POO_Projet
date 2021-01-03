@@ -23,7 +23,7 @@ Python 3.8.6
 - Créer et surveiller un ou plusieurs réseau(x) électrique(s)
 
 ## Diagramme des classes :
-![Diagramme des classe](/image/diagramme_de_classe)
+![Diagramme des classe](image/diagramme_de_classe)
 
 ## Fonctionnalités
 - Création de(s) réseau(x) électrique(s) complet(s)(centrales,consommateurs,distributeur,dissipateur,stock,noeuds,lignes,...)
