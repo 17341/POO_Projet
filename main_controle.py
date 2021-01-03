@@ -67,7 +67,7 @@ def run():
             pass
     time.sleep(2)
     print("\n")  
-    distributeur.update(reseau.consommateurs,reseau.centrales)
+    distributeur.update(reseau.get_consommateurs(),reseau.get_centrales())
     distributeur.verify(stock = stock)
     
     

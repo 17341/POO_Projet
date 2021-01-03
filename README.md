@@ -25,6 +25,9 @@ Python 3.8.6
 ## Diagramme des classes :
 ![Diagramme des classe](image/diagramme_de_classe.png)
 
+## Diagramme séquence :
+![Diagramme séquence](image/diagramme_sequence.png)
+
 ## Fonctionnalités
 - Création de(s) réseau(x) électrique(s) complet(s)(centrales,consommateurs,distributeur,dissipateur,stock,noeuds,lignes,...)
 - Possibilité d'ajouter et de supprimer des élements dans le(s) réseau(x)

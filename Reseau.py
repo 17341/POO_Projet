@@ -13,6 +13,12 @@ class Reseau:
         
         pass
 
+    def get_consommateurs(self):
+        return self.consommateurs
+
+    def get_centrales(self):
+        return self.centrales
+
     def update_reseau(self):
         for elem in self.consommateurs:
             print(elem.consumption)

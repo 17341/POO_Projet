@@ -47,8 +47,6 @@ class Distributeur:
         if self.get_total('demands') == self.get_total('energy') :
             distributeur_messages.append("Ok we have enough energy")
         elif self.get_total('demands') > self.get_total('energy') :
-            distributeur_messages.append("WE NEED MORE ENERGY")
             stock.update(self.get_total('energy'),self.get_total('demands'))
         else :
-            distributeur_messages.append("WE WILL STOCK ENERGY")
             stock.update(self.get_total('energy'),self.get_total('demands'))
