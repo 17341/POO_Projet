@@ -10,7 +10,7 @@ Python 3.8.6
 # Installation
 - Télecharger ou clone le dossier POO_Projet de github en tapant :
     git clone https://github.com/17341/POO_Projet
-- Installer Python 3 et Pandas sur votre pc si ce n'est pas déja fait.
+- Installer Python 3 et Pandas sur votre pc si ce n'est pas déja fait
 
 # How to test 
 - Ouvrer le dossier POO_Projet dans un terminal:
@@ -33,5 +33,12 @@ Python 3.8.6
 - Controle automatique des lignes et noeuds pour eviter les problèmes de puissances
 
 ## Important
-- Les differents valeurs utilisées dans le test sont à titre indicatif, on utilise le module random pour les productions, consommations, prix du marchés, méteos. 
-- Vous pouvez donc avoir des valeurs irréalistes et qui vous paraissent illogiques, mais ce n'est qu'une simulation de test.
+- Les differents valeurs utilisées dans le test sont à titre indicatif, on utilise le module random pour les productions, consommations, prix du marchés, méteos
+- Vous pourrez donc avoir des valeurs irréalistes et qui vous paraissent illogiques, ce n'est finalement qu'une simulation de test
+- Pour l'instant : si vous voulez changer/ajouter des élements/valeurs, ceci ce fait dand le main_controle
+
+## A ajouter
+- Une nouvelle version sera ajouter plus-tard pour vous permettre : 
+    - Modifier dynamiquement les élements du réseau en même temps que les mises à jour
+    - Option de simuler vos données
+    - Une interface graphique
