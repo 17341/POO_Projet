@@ -82,6 +82,7 @@ class Parc_Eolienne(Central):
         if meteo.wind_speed < 120:
             if meteo.wind_speed > 15:
                 if (meteo.wind_speed /2) != self.energy:
+                    centrales_messages.append(f'Energy of {self.name} updated from {self.energy}MW to {meteo.wind_speed /2}MW')
                     self.energy =meteo.wind_speed/ 2
                     self.line.power = self.energy  
                     if (self.energy ) > 0 :
@@ -119,6 +120,10 @@ class Central_Gaz(Central):
     def __init__(self,energy,name,type = 'Gaz',status= False):
         super().__init__(energy,name,type,status)
         
+
+    def check_combustible(self):
+        pass
+    
 class Stock(Central):
     
     def __init__(self,energy,stock,name,type = 'Stock',status= False,max_stock = 500,dissipateur = Dissipateur(0,0,"dissipateur_stock")):

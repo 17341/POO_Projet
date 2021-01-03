@@ -50,9 +50,7 @@ class Dissipateur(Consommateur):
 
     def __init__(self,consumption,production,name,type = "Dissipateur"):
         super().__init__(consumption,"",name,type)
-        self.production = production
-        self.name = name
-        
+        self.production = production        
 
     def update_production(self,new_consumption,new_production):
         self.consumption = new_consumption

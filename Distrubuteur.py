@@ -7,7 +7,7 @@ class Distributeur:
     def __init__(self,name,list_demands = [],list_energy= []):
         self.list_demands = list_demands
         self.list_energy  = list_energy
-        self.nam = name
+        self.name = name
         self.input_line = Line(100,"Input-"+name)
         self.output_line = Line(100,"Output-"+name)
 
