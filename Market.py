@@ -90,8 +90,8 @@ def show_market(table):
 
     df = pd.DataFrame(dict)
     df.isnull()
-    print("Markets ")
-    print(df)
+    markets_messages.append("Markets ")
+    markets_messages.append(df)
 
 cameroun = Market("Cameroun", 10, 19, 6000, 1000,10)
 liban = Market("Liban", 100, 87, 600, 500,23)

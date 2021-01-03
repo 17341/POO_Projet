@@ -24,31 +24,29 @@ liste_centrales = [c1,c2,c3,c4,stock]
 
 for central in liste_centrales:   
     lines_centrales.append(central.line)
-    if central != stock:
-        central.on()
 
-distributeur = Distributeur()
+distributeur = Distributeur("distributeur")
 
 nc1 = Noeud_Concentration(500,"Noeud-Centrale",lines_centrales,distributeur.input_line)
 
-cons1 = Consommateur(0,0,'kola',line = Line(100,"Line-Cons1"))
-ville1 = Ville(0,0,'kola',1090)
-entreprise1 = Entreprise(0,0,'kola','economy')
+cons1 = Consommateur(0,0,'ECAM')
+ville1 = Ville(0,0,'Bruxelles',1090)
+entreprise1 = Entreprise(0,0,'Microsoft','economy')
+entreprise2 = Entreprise(0,0,'Microsoft2','economy')
 
-liste_consommateurs = [cons1,ville1,entreprise1]
+liste_consommateurs = [cons1,ville1,entreprise1,entreprise2]
 
 for conso in liste_consommateurs:   
     lines_consommateurs.append(conso.line)
 
-nd1 = Noeud_Distribution(100,"Noeud-Consommateur",lines_consommateurs,distributeur.output_line)
+nd1 = Noeud_Distribution(500,"Noeud-Consommateur",lines_consommateurs,distributeur.output_line)
 
 reseau = Reseau(liste_consommateurs,liste_centrales,[nc1,nd1])
 
 def run():
-    messages = [distributeur_messages,centrales_messages,consommateurs_messages,markets_messages,lines_messages,noeuds_messages,reseau_messages]
+    messages = [distributeur_messages,markets_messages,centrales_messages,consommateurs_messages,lines_messages,noeuds_messages,reseau_messages]
     print("###########################################")    
     show_meteo(meteos)
-    print("\n")  
     print("\n")  
     show_centrales(reseau.centrales)
     print("\n")

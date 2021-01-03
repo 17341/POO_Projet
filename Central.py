@@ -2,7 +2,6 @@ from numpy.lib.function_base import diff
 from ligne import *
 import time
 import pandas as pd
-import random as r
 from Consommateur import *
 from Market import *
 from Meteo import *
@@ -10,11 +9,11 @@ from Meteo import *
 centrales_messages = []
 
 class Central:
-    def __init__(self,energy,name,line,type,status):
+    def __init__(self,energy,name,type,status):
         self.energy = energy
         self.name = name
         self.type = type
-        self.line = line
+        self.line = Line(100,"Ligne-"+name)
         self.status = status
         self.cost = energy/2
         if type == 'Nucleaire' or type == 'Gaz' :
@@ -48,38 +47,49 @@ class Central:
     
     def check(self):
         if self.energy == 0 :
-            self.status = False
-            centrales_messages.append(f'{self.name} has no energy')
+           self.off()
         else:
-            self.status = True
-              
+            if self.status == False:
+                self.on()
+            else:
+                pass
 class Central_Solaire(Central):
 
-    def __init__(self,energy,name, line= Line(100,"Ligne-Solaire"),type = 'Solaire',status= False):
-        super().__init__(energy,name,line,type,status) 
+    def __init__(self,energy,name,type = 'Solaire',status= False):
+        super().__init__(energy,name,type,status) 
 
     def check_meteo(self,meteo):
         if meteo.status == "Soleil":
-            self.energy = meteo.temperature / 2
-            self.line.power = self.energy  
+            if (meteo.temperature /2) != self.energy:
+                centrales_messages.append(f'Energy of {self.name} updated from {self.energy}MW to {meteo.temperature /2}MW')
+                self.energy = meteo.temperature / 2
+                self.line.power = self.energy  
+                if (self.energy ) > 0 :
+                        self.line.power = self.energy  
+                else:
+                    self.line.power = 0
+            else:
+                pass
         else:
             self.energy = 0
             self.line.power = self.energy
-
 class Parc_Eolienne(Central):
 
-    def __init__(self,energy,name,line= Line(100,"Ligne-Eolienne"),type = 'Eolienne',status= False):
-        super().__init__(energy,name,line,type,status) 
+    def __init__(self,energy,name,type = 'Eolienne',status= False):
+        super().__init__(energy,name,type,status) 
         
     def check_meteo(self,meteo):
         if meteo.wind_speed < 120:
             if meteo.wind_speed > 15:
-                self.energy =meteo.wind_speed/ 2
-                self.line.power = self.energy  
-                if (self.energy ) > 0 :
+                if (meteo.wind_speed /2) != self.energy:
+                    self.energy =meteo.wind_speed/ 2
                     self.line.power = self.energy  
+                    if (self.energy ) > 0 :
+                        self.line.power = self.energy  
+                    else:
+                        self.line.power = 0
                 else:
-                    self.line.power = 0
+                    pass
             else:
                 self.energy = 0
                 self.line.power = self.energy
@@ -89,8 +99,8 @@ class Parc_Eolienne(Central):
 
 class Central_Nucleaire(Central):
 
-    def __init__(self,energy,name,line= Line(100,"Ligne-Nucleaire"),type = 'Nucleaire',status= False):
-        super().__init__(energy,name,line,type,status)
+    def __init__(self,energy,name,type = 'Nucleaire',status= False):
+        super().__init__(energy,name,type,status)
     
     def on(self):
         time.sleep(2)
@@ -106,13 +116,13 @@ class Central_Nucleaire(Central):
 
 class Central_Gaz(Central):
     
-    def __init__(self,energy,name,line= Line(100,"Ligne-Gaz"),type = 'Gaz',status= False):
-        super().__init__(energy,name,line,type,status)
+    def __init__(self,energy,name,type = 'Gaz',status= False):
+        super().__init__(energy,name,type,status)
         
 class Stock(Central):
     
-    def __init__(self,energy,stock,name,line= Line(300,"Ligne-Stock"),type = 'Stock',status= False,max_stock = 500,dissipateur = Dissipateur(0,0)):
-        super().__init__(energy,name,line,type,status) #CO2 == 0
+    def __init__(self,energy,stock,name,type = 'Stock',status= False,max_stock = 500,dissipateur = Dissipateur(0,0,"dissipateur_stock")):
+        super().__init__(energy,name,type,status) #CO2 == 0
         self.stock = stock
         self.max_stock = max_stock
         self.dissipateur = dissipateur

@@ -4,11 +4,12 @@ from Central import *
 distributeur_messages = []
 
 class Distributeur:
-    def __init__(self,list_demands = [],list_energy= [],input_line= Line(500,"Input-Distributeur"),output_line= Line(500,"Output-Distributeur")):
+    def __init__(self,name,list_demands = [],list_energy= []):
         self.list_demands = list_demands
         self.list_energy  = list_energy
-        self.input_line = input_line
-        self.output_line = output_line
+        self.nam = name
+        self.input_line = Line(100,"Input-"+name)
+        self.output_line = Line(100,"Output-"+name)
 
     def get_total(self, list):
         
@@ -25,7 +26,7 @@ class Distributeur:
         new_list_demands = []
         new_list_energy = []
         for consommateur in list_consommateur:
-            consommateur.update_consumption(r.randint(20,100))
+            consommateur.update_consumption(r.randint(0,200))
             new_list_demands.append(consommateur.consumption)
         self.list_demands = new_list_demands
     
@@ -35,7 +36,7 @@ class Distributeur:
             elif central.type == "Solaire" :
                 central.check_meteo(meteos)
             elif central.type != "Stock":
-                central.update_infos(r.randint(20,100))
+                central.update_infos(r.randint(0,200))
             else:
                 pass
             new_list_energy.append(central.energy)
@@ -43,13 +44,11 @@ class Distributeur:
         self.list_energy  = new_list_energy
 
     def verify(self,stock):
-        distributeur_messages.append(self.get_total('demands'))
-        distributeur_messages.append(self.get_total('energy'))
         if self.get_total('demands') == self.get_total('energy') :
             distributeur_messages.append("Ok we have enough energy")
         elif self.get_total('demands') > self.get_total('energy') :
             distributeur_messages.append("WE NEED MORE ENERGY")
             stock.update(self.get_total('energy'),self.get_total('demands'))
         else :
-            distributeur_messages.append("We will stock energy")
+            distributeur_messages.append("WE WILL STOCK ENERGY")
             stock.update(self.get_total('energy'),self.get_total('demands'))
