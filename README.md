@@ -22,6 +22,9 @@ Python 3.8.6
 - Simuler des tests dans un réseau électrique pour des chercheurs
 - Créer et surveiller un ou plusieurs réseau(x) électrique(s)
 
+## Diagramme des classes :
+![Diagramme des classe](/image/diagramme_de_classe)
+
 ## Fonctionnalités
 - Création de(s) réseau(x) électrique(s) complet(s)(centrales,consommateurs,distributeur,dissipateur,stock,noeuds,lignes,...)
 - Possibilité d'ajouter et de supprimer des élements dans le(s) réseau(x)
