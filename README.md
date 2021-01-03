@@ -20,7 +20,7 @@ Python 3.8.6
 
 ## A quoi ça peut servir?  
 - Simuler des tests dans un réseau électrique pour des chercheurs
-- Surveiller un ou plusieurs réseau(x) électrique
+- Créer et surveiller un ou plusieurs réseau(x) électrique
 
 ## Fonctionnalités
 - Création de(s) réseau(x) électrique complet(es)(centrales,consommateurs,distributeur,dissipateur,stock,noeuds,lignes,...)
