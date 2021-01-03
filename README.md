@@ -23,9 +23,9 @@ Python 3.8.6
 - Surveiller un ou plusieurs réseau(x) électrique
 
 ## Fonctionnalités
-- Création de(s) réseau(x) électrique complet(centrales,consommateurs,distributeur,dissipateur,stock,noeuds,lignes,...)
+- Création de(s) réseau(x) électrique complet(es)(centrales,consommateurs,distributeur,dissipateur,stock,noeuds,lignes,...)
 - Possibilité d'ajouter et de supprimer des élements dans le(s) réseau(x)
-- Mettre à jour et afficher les productions, frais de productions,émissions de CO2 des centrales,consommations et prix de consommations, puissances de lignes/noeuds,status des élements, ...
+- Mettre à jour et afficher les productions, frais de productions, émissions de CO2 des centrales ,consommations et prix de consommations, puissances de lignes/noeuds, status des élements, ...
 - Envoyer des messages d'erreurs, d'alertes, modifications de produciotn/consommation, arrêt/marche centrales, ...
 - Implementation d'un sytème de marché pour achat/vente d'électricité/combustible à l'étranger automatiquement 
 - Implementation d'un sytème de méteo pour controler automatiquement les centrales solaires et les parcs éoliennes
@@ -40,5 +40,5 @@ Python 3.8.6
 ## A ajouter
 - Une nouvelle version sera ajouter plus-tard pour vous permettre : 
     - Modifier dynamiquement les élements du réseau en même temps que les mises à jour
-    - Option de simuler vos données
+    - Option de simuler les données d'une base de données
     - Une interface graphique
